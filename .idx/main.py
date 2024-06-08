@@ -98,14 +98,15 @@ for i in range(pages):
         if command_index < len(Basics):
             embed.add_field(name=f"Command {j+1}", value=Basics[command_index], inline=True)
             embeds.append(embed)
-            
-            msg = await ctx.send(embed=embeds[0])
-    await msg.add_reaction('◀️')
-    await msg.add_reaction('▶️')
 
-    i = 0
-    emoji = ''
-    while True:
+        msg = await ctx.send(embed=embeds[0])
+        await msg.add_reaction('◀️')
+        await msg.add_reaction('▶️')
+            
+i = 0
+emoji = ''
+
+while True:
         if emoji == '▶️':
             if i < len(embeds) - 1:
                 i += 1
@@ -116,7 +117,7 @@ for i in range(pages):
                 i -= 1
             else:
                 i = len(embeds) - 1
-        await msg.edit(embed=embeds[i])
+        await (await ctx.send(embed=embeds[0])).edit(embed=embeds[i])
         react = await bot.wait_for('reaction_add', timeout=30.0, check=lambda r, u: u == ctx.author and str(r.emoji) in ['◀️', '▶️'])
         emoji = str(react[0].emoji)
 
